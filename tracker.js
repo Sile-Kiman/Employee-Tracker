@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
   user: "root",
 
   // Your password
-  password: "",
+  password: "2020@Sile",
   database: "Employee_DB"
 });
 
@@ -41,31 +41,31 @@ function runEmployeeQuerry() {
       switch (data.answer) {
       case "View All Employees":
         viewEmployees();
-        break;
+    //     //break;
 
-      case "View All Employees By Department":
-        viewEmplbyDept();
-        break;
+    //   case "View All Employees By Department":
+    //     viewEmplbyDept();
+    //     //break;
 
-      case "View All Employees By Manager":
-        viewEmpbyMng();
-        break;
+    //   case "View All Employees By Manager":
+    //     viewEmpbyMng();
+    //     break;
 
-      case "Add Employee":
-        addEmployee();
-        break;
+    //   case "Add Employee":
+    //     addEmployee();
+    //     //break;
 
-        case "Remove Employee":
-        removeEmployee();
-        break;
+    //     case "Remove Employee":
+    //     removeEmployee();
+    //     //break;
 
-        case "Update Employee Role":
-        updateEmplbyRole();
-        break;
+    //     case "Update Employee Role":
+    //     updateEmplbyRole();
+    //     break;
 
-        case "Update Employee Manager":
-        updateEmplMngr();
-        break;
+        // case "Update Employee Manager":
+        // updateEmplMngr();
+        // break;
 
       case "exit":
         connection.end();
@@ -131,13 +131,19 @@ function addEmployee() {
          }
     ])
       .then(function(answer) {
-       // var query = "INSERT INTO first_name, last_name, salary, SET?";
-        //connection.query(query, { employee: answer }, function(err, res) {
-         // if (err) throw err;
-         // for (var i = 0; i < res.length; i++) {
-            //console.log(res);
-        //   }
-           
-        // });
+        
       });
   }
+
+  function viewEmployees() {
+        console.log("Selecting all Employee...\n");
+        connection.query( 
+        "SELECT emp.id,  emp.first_name, emp.last_name, emp.manager_first_name, emp.manager_last_name, rol.Title, rol.Salary, dept.dept_name FROM employee as emp INNER JOIN dep_role as rol ON emp.role_id = rol.role_id INNER JOIN department as dept ON rol.dept_id = dept.dept_id ORDER BY emp.id",function(err, res) {
+          if (err) throw err;
+          // Log all results of the SELECT statement
+          console.log(res);
+          //connection.end();
+        });
+      }
+    
+  //}
