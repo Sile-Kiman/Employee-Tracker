@@ -4,7 +4,7 @@ CREATE database  Employee_DB;
 USE   Employee_DB;
 
 CREATE TABLE department(
-  id INT  NOT NULL AUTO_INCREMENT, -- Primary Key
+  dept_id INT  NOT NULL AUTO_INCREMENT, -- Primary Key
   dept_name VARCHAR(30) NOT NULL, -- hold department name
   PRIMARY KEY (id)
 );
@@ -12,20 +12,25 @@ CREATE TABLE department(
 -- SELECT * FROM department;
 
 -- USE   Employee_DB;
+ USE   Employee_DB;
+-- DROP  TABLE dept_role;
  
-CREATE TABLE dep_role(
-  id INT  NOT NULL PRIMARY KEY AUTO_INCREMENT, -- Primary Key
-  title VARCHAR(30) NOT NULL, -- hold role title
-  salary DECIMAL(10, 2) NOT NULL, -- hold role salaries
-  dept_id INT  NULL,
-  -- ON DELETE (Cascade),
-  FOREIGN KEY(dept_id) REFERENCES department(id)   -- hold role title
-   
+ CREATE TABLE dept_role(
+  role_id INT  NOT NULL AUTO_INCREMENT PRIMARY KEY , -- Primary Key
+  Title VARCHAR(30) NOT NULL, -- hold role title
+  Salary DECIMAL(10, 2) NOT NULL, -- hold role salaries
+  dept_id INT NULL,
+  -- INDEX (dept_id),
+-- CONSTRAINT  dept_role_fk_
+CONSTRAINT  dept_role_fk_ FOREIGN KEY(dept_id) REFERENCES department(dept_id)   -- hold role title
+ON UPDATE CASCADE ON DELETE CASCADE  
 );
 -- USE   Employee_DB;
--- SELECT * FROM dep_role;
+-- SELECT * FROM dept_role;
   
-USE   Employee_DB;
+UUSE   Employee_DB;
+-- USE   Employee_DB;
+-- DROP  TABLE employee;
 CREATE TABLE employee(
   id INT  NOT NULL PRIMARY KEY AUTO_INCREMENT, -- Primary Key
   first_name VARCHAR(30)  NULL, -- hold employee first name
@@ -33,19 +38,19 @@ CREATE TABLE employee(
   role_id INT NULL ,-- hold reference to role employee has
   manager  VARCHAR(50)  NULL,
   manager_id INT NULL, -- hold reference to another employee that manager of the current employee
-  FOREIGN KEY(role_id) REFERENCES dep_role (id),
-  FOREIGN KEY(manager_id) REFERENCES employee (id)
+  CONSTRAINT  employee_fk_1 FOREIGN KEY(role_id) REFERENCES dept_role (role_id),
+  CONSTRAINT  employee_fk_2 FOREIGN KEY(manager_id) REFERENCES employee (id)-- hold role title
+  ON UPDATE CASCADE ON DELETE CASCADE  
 );
--- INSERT INTO  employee (first_name, last_name, role_id, manager_first_name, manager_last_name, manager_id) 
  
--- USE   Employee_DB;
--- SELECT * FROM employee;
+USE   Employee_DB;
+SELECT * FROM employee;
 
  
-
+-- Select all employee
 SELECT  emp.id,  emp.first_name, emp.last_name, emp.manager_first_name, 
 emp.manager_last_name, rol.Title, rol.Salary, dept.dept_name
-FROM employee as emp INNER JOIN dep_role as rol
+FROM employee as emp INNER JOIN dept_role as rol
 ON emp.role_id = rol.id
 INNER JOIN department as dept 
 ON rol.dept_id = dept.id
