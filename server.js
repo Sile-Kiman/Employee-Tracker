@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-const console_table = require('console.table');
+const cTable = require('console.table');
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -34,6 +34,7 @@ function manageEmployee() {
         "View roles",
         "Update Employee Role",
         "Add employee",
+        "View All Employees",
         "View Employees roles and departments",
         "Remove Employee",
         "Exit"
@@ -64,7 +65,7 @@ function manageEmployee() {
           addEmployee();
           break;
 
-        case "View Employees":
+        case "View All Employees":
           viewAllEmployee();
           break;
         case "View Employees roles and departments":
@@ -105,8 +106,7 @@ function addDepartment() {
         { dept_name: answer.dept, },
         function (err, res) {
           if (err) throw err;
-          console.log("Your new employee has been added!", res);
-          viewDeptments();
+           viewDeptments();
         })
     });
 }
@@ -116,8 +116,7 @@ function viewDeptments() {
   connection.query(
     "SELECT * FROM department", function (err, res) {
       if (err) throw err;
-       
-      console.log(res);
+      console.table(res);
       connection.end()
     });
 }
@@ -164,8 +163,7 @@ function addEmplRole() {
         { title: answer.title, salary: answer.salary, dept_id: answer.dept_id },
         function (err, res) {
           if (err) throw err;
-          console.log("Your employee  role has been added!", res);
-          viewAllRoles()
+           viewAllRoles()
         })
     });
 }
@@ -176,8 +174,7 @@ function viewAllRoles() {
   connection.query(
     "SELECT * FROM dept_role", function (err, res) {
       if (err) throw err;
-       
-      console.log(res);
+      console.table(res)
       connection.end()
     });
 }
@@ -233,9 +230,7 @@ function addEmployee() {
         }, function (err, res) {
           if (err) throw err;
           console.log("Your new employee has been added!");
-          viewEmployees()
-          console.log(res)
-
+          viewEmployees();
         }
       )
     });
@@ -246,9 +241,10 @@ function viewEmployees() {
   console.log("Selecting all Employee...\n");
   connection.query(
     "SELECT emp.id,  emp.first_name, emp.last_name, emp.manager, emp.manager_id, rol.Title, rol.Salary, dept.dept_name FROM employee as emp INNER JOIN dept_role as rol ON emp.role_id = rol.role_id INNER JOIN department as dept ON rol.dept_id = dept.dept_id ORDER BY emp.id", function (err, res) {
-      if (err) throw err;
-       console.log(res);
+      if (err) throw err;  
+       console.table(res)
       connection.end()
+     
 
     });
 }
@@ -259,7 +255,8 @@ function viewAllEmployee() {
   connection.query(
     "SELECT * FROM employee", function (err, res) {
       if (err) throw err;
-       console.log(res);
+        console.table(res);
+        
      });
 }
 
@@ -289,18 +286,14 @@ function updateEmpRole() {
             first_name: answer.fname,
 
           }], function (err, res) {
-            // var err = "Please enter a vlaid role id"
-            if (err) throw err;
-            console.log("Your new employee has been added!");
+          if (err) throw err;
             viewEmployees()
-            console.log(res)
-
           }
       )
     });
 }
 
-//Function to update an Employee Role
+//Function to delete an Employee  
 function deleteEmployee() {
   inquirer
     .prompt([
@@ -317,9 +310,7 @@ function deleteEmployee() {
 
         , function (err, res) {
            if (err) throw err;
-          console.log("Your new employee has been added!");
-          viewEmployees()
-          console.log(res)
+          viewEmployees();
 
         }
       )
