@@ -38,9 +38,8 @@ Test:
  
 3-Verify all the record display after all questions had been answered 
 
-## Image of the Site:
- 
-<img scr= "employee.png">
+![Image of the Site:]
+(https://github.com/Sile-Kiman/Employee-Tracker/blob/master/employee.png)
 
  
 License:
