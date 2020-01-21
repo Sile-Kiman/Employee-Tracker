@@ -38,7 +38,7 @@ Test:
  
 3-Verify all the record display after all questions had been answered 
 Image of the Site:
-<img scr= " ">
+<img scr= "employee.png ">
 
  
 License:
